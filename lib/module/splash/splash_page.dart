@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tmdbi/core/util/constants.dart';
+import 'package:flutter_tmdbi/data/models/app_config.dart';
+import 'package:flutter_tmdbi/data/services/http_service.dart';
+import 'package:flutter_tmdbi/data/services/movie_service.dart';
+import 'package:get_it/get_it.dart';
 
 class SplashPage extends StatefulWidget {
   final VoidCallback onInitCompleted;
@@ -13,9 +18,18 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 1)).then(
-      (_) => widget.onInitCompleted(),
+      (_) => _setup(context).then((_) => widget.onInitCompleted()),
     );
     super.initState();
+  }
+
+  Future<void> _setup(BuildContext context) async {
+    final getIt = GetIt.instance;
+    getIt.registerSingleton<AppConfig>(
+        AppConfig(baseUrl: baseUrl, imgUrl: baseImageApiUrl, apiKey: apiKey));
+
+    getIt.registerSingleton<HttpService>(HttpService());
+    getIt.registerSingleton<MovieService>(MovieService());
   }
 
   @override
