@@ -7,9 +7,7 @@ class MovieTile extends StatelessWidget {
   final double width;
   final Movie movie;
 
-  final GetIt getIt = GetIt.instance;
-
-  MovieTile(
+  const MovieTile(
       {Key? key,
       required this.height,
       required this.width,
@@ -36,7 +34,10 @@ class MovieTile extends StatelessWidget {
   }
 
   Widget _moviePosterWidget(String url) {
-    return Image.network(url);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Image.network(url),
+    );
   }
 
   Widget _movieInfoWidget() {
@@ -73,7 +74,9 @@ class MovieTile extends StatelessWidget {
             color: Colors.white54,
           ),
         ),
-        const SizedBox(height: 16,),
+        const SizedBox(
+          height: 16,
+        ),
         Expanded(
           child: Text(
             movie.description,

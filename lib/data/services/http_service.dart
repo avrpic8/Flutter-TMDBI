@@ -20,14 +20,12 @@ class HttpService {
       String url = '$_baseUrl$path';
       Map<String, dynamic> _query = {
         'api_key': _apiKey,
-        'language': 'en_US',
+        'language': 'en-US',
       };
       if (query != null) {
         _query.addAll(query);
       }
-
-      var result = await dio.get(url, queryParameters: _query);
-      return result;
+      return await dio.get(url, queryParameters: _query);
     } on DioError catch (e) {
       print(e.error);
       return e.error;
