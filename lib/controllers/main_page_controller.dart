@@ -3,12 +3,13 @@ import 'package:flutter_tmdbi/data/models/main_page_data.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
 import 'package:flutter_tmdbi/data/models/search_category.dart';
 import 'package:flutter_tmdbi/data/services/movie_service.dart';
-import 'package:get_it/get_it.dart';
 
 class MainPageController extends StateNotifier<MainPageData> {
-  final MovieService _movieService = GetIt.instance.get<MovieService>();
+  final ProviderReference ref;
+  final MovieService movieService;
 
-  MainPageController() : super(MainPageData.init()) {
+  MainPageController({required this.ref, required this.movieService})
+      : super(MainPageData.init()) {
     getMovies();
   }
 
@@ -18,9 +19,9 @@ class MainPageController extends StateNotifier<MainPageData> {
 
       if (state.searchText.isEmpty) {
         if (state.searchCategory == SearchCategory.popular) {
-          movies = await _movieService.getPopularMovies(page: state.page);
+          movies = await movieService.getPopularMovies(page: state.page);
         } else if (state.searchCategory == SearchCategory.upcoming) {
-          movies = await _movieService.getUpcomingMovies(page: state.page);
+          movies = await movieService.getUpcomingMovies(page: state.page);
         } else if (state.searchCategory == SearchCategory.none) {
           movies = [];
         }
@@ -36,6 +37,7 @@ class MainPageController extends StateNotifier<MainPageData> {
     try {
       state = state.copyWith(
           movies: [], page: 1, searchCategory: category, searchText: '');
+      getMovies();
     } catch (e) {
       print(e.toString());
     }

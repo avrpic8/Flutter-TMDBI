@@ -24,12 +24,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _setup(BuildContext context) async {
-    final getIt = GetIt.instance;
-    getIt.registerSingleton<AppConfig>(
-        AppConfig(baseUrl: baseUrl, imgUrl: baseImageApiUrl, apiKey: apiKey));
-
-    getIt.registerSingleton<HttpService>(HttpService());
-    getIt.registerSingleton<MovieService>(MovieService());
+    // final getIt = GetIt.instance;
+    // getIt.registerSingleton<AppConfig>(
+    //     AppConfig(baseUrl: baseUrl, imgUrl: baseImageApiUrl, apiKey: apiKey));
   }
 
   @override

@@ -1,16 +1,18 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_tmdbi/data/models/app_config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tmdbi/data/providers/providers.dart';
 import 'package:get_it/get_it.dart';
 
 class HttpService {
+  final ProviderReference ref;
   final Dio dio = Dio();
   final GetIt getIt = GetIt.instance;
 
   late String _baseUrl;
   late String _apiKey;
 
-  HttpService() {
-    AppConfig config = getIt.get<AppConfig>();
+  HttpService({required this.ref}) {
+    final config = ref.watch(appConfigProvider);
     _baseUrl = config.baseUrl;
     _apiKey = config.apiKey;
   }

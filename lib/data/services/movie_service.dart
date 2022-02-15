@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
+import 'package:flutter_tmdbi/data/providers/providers.dart';
 import 'package:flutter_tmdbi/data/services/http_service.dart';
-import 'package:get_it/get_it.dart';
 
 class MovieService {
-  final GetIt getIt = GetIt.instance;
-
+  final ProviderReference ref;
   late HttpService _http;
 
-  MovieService() {
-    _http = getIt.get<HttpService>();
+  MovieService({required this.ref}) {
+    _http = ref.watch(httpServiceProvider);
   }
 
   Future<List<Movie>> getPopularMovies({required int page}) async {
@@ -19,7 +19,8 @@ class MovieService {
 
     if (response.statusCode == 200) {
       Map data = response.data;
-      List<Movie> movies = data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
+      List<Movie> movies =
+          data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
       return movies;
     } else {
       throw Exception('Could not load movies');
@@ -33,7 +34,8 @@ class MovieService {
 
     if (response.statusCode == 200) {
       Map data = response.data;
-      List<Movie> movies = data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
+      List<Movie> movies =
+          data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
       return movies;
     } else {
       throw Exception('Could not load movies');

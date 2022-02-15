@@ -6,11 +6,8 @@ import 'package:flutter_tmdbi/controllers/main_page_controller.dart';
 import 'package:flutter_tmdbi/data/models/main_page_data.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
 import 'package:flutter_tmdbi/data/models/search_category.dart';
+import 'package:flutter_tmdbi/data/providers/providers.dart';
 import 'package:flutter_tmdbi/module/home/widget/movie_tile.dart';
-
-final mainPageControllerProvider = StateNotifierProvider<MainPageController>(
-  (ref) => MainPageController(),
-);
 
 class MainPage extends ConsumerWidget {
   late double _heightDevice;
@@ -154,7 +151,9 @@ class MainPage extends ConsumerWidget {
         height: 1,
         color: Colors.white24,
       ),
-      onChanged: (value) => value.toString().isNotEmpty ? _controller.updateSearchCategory(value.toString()) : null,
+      onChanged: (value) => value.toString().isNotEmpty
+          ? _controller.updateSearchCategory(value.toString())
+          : null,
       items: const [
         DropdownMenuItem(
           child: Text(
