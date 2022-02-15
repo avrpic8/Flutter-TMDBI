@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tmdbi/controllers/main_page_controller.dart';
+import 'package:flutter_tmdbi/module/home/controller/main_page_controller.dart';
 import 'package:flutter_tmdbi/data/models/main_page_data.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
 import 'package:flutter_tmdbi/data/models/search_category.dart';
@@ -15,7 +15,6 @@ class MainPage extends ConsumerWidget {
 
   late MainPageController _controller;
   late MainPageData _data;
-  late TextEditingController _searchBarController;
 
   MainPage({Key? key}) : super(key: key);
 
@@ -27,7 +26,6 @@ class MainPage extends ConsumerWidget {
     _controller = watch(mainPageControllerProvider);
     _data = watch(mainPageControllerProvider.state);
 
-    _searchBarController = TextEditingController();
     return _buildUi();
   }
 
@@ -121,7 +119,7 @@ class MainPage extends ConsumerWidget {
       width: _widthDevice * 0.50,
       height: _heightDevice * 0.05,
       child: TextField(
-        controller: _searchBarController,
+        controller: _controller.searchBarController,
         onSubmitted: (_intput) {},
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(

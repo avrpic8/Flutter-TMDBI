@@ -1,5 +1,4 @@
-import 'package:flutter_tmdbi/data/models/app_config.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_tmdbi/core/util/constants.dart';
 
 class Movie {
   final String name;
@@ -34,8 +33,7 @@ class Movie {
   }
 
   String posterUrl() {
-    final AppConfig config = GetIt.instance.get<AppConfig>();
-    var posterUrl = '${config.imgUrl}$posterPath';
+    var posterUrl = '$baseImageApiUrl$posterPath';
     return posterUrl;
   }
 }

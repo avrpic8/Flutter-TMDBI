@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tmdbi/core/util/constants.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
-import 'package:get_it/get_it.dart';
 
 class MovieTile extends StatelessWidget {
   final double height;

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tmdbi/data/models/main_page_data.dart';
 import 'package:flutter_tmdbi/data/models/movie.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_tmdbi/data/services/movie_service.dart';
 class MainPageController extends StateNotifier<MainPageData> {
   final ProviderReference ref;
   final MovieService movieService;
+
+  final TextEditingController searchBarController = TextEditingController();
 
   MainPageController({required this.ref, required this.movieService})
       : super(MainPageData.init()) {
@@ -41,5 +44,10 @@ class MainPageController extends StateNotifier<MainPageData> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  @override
+  void dispose() {
+    searchBarController.dispose();
   }
 }
