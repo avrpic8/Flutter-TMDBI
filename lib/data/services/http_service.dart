@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tmdbi/data/providers/providers.dart';
 
 class HttpService {
-  final ProviderReference ref;
+  final Ref ref;
   final Dio dio = Dio();
 
   late String _baseUrl;

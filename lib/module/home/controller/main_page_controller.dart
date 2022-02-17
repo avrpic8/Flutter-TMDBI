@@ -6,12 +6,11 @@ import 'package:flutter_tmdbi/data/models/search_category.dart';
 import 'package:flutter_tmdbi/data/services/movie_service.dart';
 
 class MainPageController extends StateNotifier<MainPageData> {
-  final ProviderReference ref;
   final MovieService movieService;
 
   final TextEditingController searchBarController = TextEditingController();
 
-  MainPageController({required this.ref, required this.movieService})
+  MainPageController({required this.movieService})
       : super(MainPageData.init()) {
     getMovies();
   }
@@ -28,6 +27,9 @@ class MainPageController extends StateNotifier<MainPageData> {
         } else if (state.searchCategory == SearchCategory.none) {
           movies = [];
         }
+      } else {
+        movies = await movieService.searchMovies(state.searchText, page: 1);
+        print(movies);
       }
       state = state
           .copyWith(movies: [...state.movies, ...movies], page: state.page + 1);
@@ -46,8 +48,16 @@ class MainPageController extends StateNotifier<MainPageData> {
     }
   }
 
-  @override
-  void dispose() {
-    searchBarController.dispose();
+  void updateSearchText(String searchTerm) {
+    try {
+      state = state.copyWith(
+          movies: [],
+          page: 1,
+          searchCategory: SearchCategory.none,
+          searchText: searchTerm);
+      getMovies();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

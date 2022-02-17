@@ -5,7 +5,7 @@ import 'package:flutter_tmdbi/data/providers/providers.dart';
 import 'package:flutter_tmdbi/data/services/http_service.dart';
 
 class MovieService {
-  final ProviderReference ref;
+  final Ref ref;
   late HttpService _http;
 
   MovieService({required this.ref}) {
@@ -38,7 +38,23 @@ class MovieService {
           data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
       return movies;
     } else {
-      throw Exception('Could not load movies');
+      throw Exception('Could not upcoming movies');
+    }
+  }
+
+  Future<List<Movie>> searchMovies(String searchTerm, {required int page}) async {
+    Response response = await _http.get('/search/movie', query: {
+      'query': searchTerm,
+      'page': page,
+    });
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      List<Movie> movies =
+          data['results'].map<Movie>((movie) => Movie.fromJson(movie)).toList();
+      return movies;
+    } else {
+      throw Exception('Could not searched movies');
     }
   }
 }
