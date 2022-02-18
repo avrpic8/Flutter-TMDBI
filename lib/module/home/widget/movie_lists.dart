@@ -7,14 +7,25 @@ import 'package:flutter_tmdbi/module/home/widget/movie_tile.dart';
 class MovieLists extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('movie');
     final double _widthDevice = MediaQuery.of(context).size.width;
     final double _heightDevice = MediaQuery.of(context).size.height;
 
-    final _data = ref.watch(mainPageControllerProvider);
-    final List<Movie> movies = _data.movies;
-    if (movies.isNotEmpty) {
-      return ListView.builder(
+    final movieData = ref.watch(movieListProvider);
+    final List<Movie> movies = movieData.movies;
+    return NotificationListener(
+      onNotification: (onScroll) {
+        if (onScroll is ScrollEndNotification) {
+          final before = onScroll.metrics.extentBefore;
+          final max = onScroll.metrics.maxScrollExtent;
+          if (before == max) {
+            ref.read(movieListProvider.notifier).getPopularMovies();
+            return true;
+          }
+          return false;
+        }
+        return false;
+      },
+      child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: movies.length,
         itemBuilder: (context, index) {
@@ -22,7 +33,11 @@ class MovieLists extends ConsumerWidget {
             padding: EdgeInsets.symmetric(
                 vertical: _heightDevice * 0.01, horizontal: 0),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                print('click');
+                ref.read(selectedMoviePosterProvider.notifier).state =
+                    movies[index].posterUrl();
+              },
               child: MovieTile(
                 height: _heightDevice * 0.20,
                 width: _widthDevice * 0.88,
@@ -31,13 +46,7 @@ class MovieLists extends ConsumerWidget {
             ),
           );
         },
-      );
-    } else {
-      return const Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-        ),
-      );
-    }
+      ),
+    );
   }
 }

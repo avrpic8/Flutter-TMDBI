@@ -9,19 +9,18 @@ class Search extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('search');
     final double _widthDevice = MediaQuery.of(context).size.width;
     final double _heightDevice = MediaQuery.of(context).size.height;
 
-    final _controller = ref.watch(mainPageControllerProvider.notifier);
+    //final _controller = ref.watch(mainPageControllerProvider.notifier);
 
     final _border = InputBorder.none;
     return Container(
       width: _widthDevice * 0.50,
       height: _heightDevice * 0.05,
       child: TextField(
-        controller: _controller.searchBarController,
-        onSubmitted: (intput) => _controller.updateSearchText(intput),
+        //controller: _controller.searchBarController,
+        onSubmitted: (intput) {}, //=> _controller.updateSearchText(intput),
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             focusedBorder: _border,

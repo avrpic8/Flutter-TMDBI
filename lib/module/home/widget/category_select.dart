@@ -4,17 +4,15 @@ import 'package:flutter_tmdbi/data/models/search_category.dart';
 import 'package:flutter_tmdbi/data/providers/providers.dart';
 
 class CategorySelect extends ConsumerWidget {
-
   const CategorySelect({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('category');
-    final _data = ref.watch(mainPageControllerProvider);
+    final _data = ref.watch(categoryProvider);
 
     return DropdownButton(
       dropdownColor: Colors.black38,
-      value: _data.searchCategory,
+      value: _data.category,
       icon: const Icon(
         Icons.menu,
         color: Colors.white24,
@@ -23,9 +21,7 @@ class CategorySelect extends ConsumerWidget {
         height: 1,
         color: Colors.white24,
       ),
-      onChanged: (value) => value.toString().isNotEmpty
-          ? ref.read(mainPageControllerProvider.notifier).updateSearchCategory(value.toString())
-          : null,
+      onChanged: (value) => movieFilters(ref, value.toString()),
       items: const [
         DropdownMenuItem(
           child: Text(
@@ -50,5 +46,16 @@ class CategorySelect extends ConsumerWidget {
         )
       ],
     );
+  }
+
+  void movieFilters(WidgetRef ref, String value) {
+    ref.read(categoryProvider.notifier).setCategory(value);
+    if (value == SearchCategory.popular) {
+      ref.read(movieListProvider.notifier).resetMovieList();
+      ref.read(movieListProvider.notifier).getPopularMovies();
+    } else {
+      ref.read(movieListProvider.notifier).resetMovieList();
+      ref.read(movieListProvider.notifier).getUpcomingMovies();
+    }
   }
 }
